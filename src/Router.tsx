@@ -6,8 +6,11 @@ function Router({ isLight }: { isLight: boolean }) {
   return (
     <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
       <Routes>
-        <Route path={`/`} element={<Coins />} />
-        <Route path={`:coinId/*`} element={<Coin isLight={isLight} />} />
+        <Route path={`${process.env.PUBLIC_URL}/`} element={<Coins />} />
+        <Route
+          path={`${process.env.PUBLIC_URL}/:coinId/*`}
+          element={<Coin isLight={isLight} />}
+        />
       </Routes>
     </BrowserRouter>
   );
