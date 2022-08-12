@@ -65,7 +65,7 @@ function Price({ coinId }: ChartProps) {
     ["quotes", coinId],
     () => fetchCoinUSD(`${coinId}`),
     {
-      // refetchInterval: 5000,
+      refetchInterval: 10000,
     }
   );
   function addNumComa(num: number) {

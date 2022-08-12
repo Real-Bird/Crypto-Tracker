@@ -159,7 +159,7 @@ function Coin({ isLight }: { isLight: boolean }) {
     ["tickers", coinId],
     () => fetchCoinTickers(`${coinId}`),
     {
-      // refetchInterval: 5000,
+      refetchInterval: 10000,
     }
   );
   const loading = infoLoading || tickersLoading;

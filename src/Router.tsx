@@ -4,7 +4,7 @@ import Coins from "./routes/Coins";
 
 function Router({ isLight }: { isLight: boolean }) {
   return (
-    <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
+    <BrowserRouter>
       <Routes>
         <Route path={`${process.env.PUBLIC_URL}/`} element={<Coins />} />
         <Route
