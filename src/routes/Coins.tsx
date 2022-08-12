@@ -20,8 +20,8 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
-  color: #747d8c;
+  background-color: ${(props) => props.theme.coinBgColor};
+  color: #1b1464;
   border-radius: 10px;
   margin-bottom: 10px;
   a {

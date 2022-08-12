@@ -7,6 +7,7 @@ import {
   Routes,
   useLocation,
   useMatch,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
@@ -36,7 +37,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.overviewBgColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -65,7 +66,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.overviewBgColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -73,6 +74,16 @@ const Tab = styled.span<{ isActive: boolean }>`
   a {
     display: block;
   }
+`;
+const GoBackBtn = styled.button`
+  position: absolute;
+  left: 2rem;
+  top: 0.5rem;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  color: ${(props) => props.theme.textColor};
 `;
 interface RouteState {
   state: {
@@ -134,9 +145,10 @@ interface PriceData {
   };
 }
 
-function Coin() {
+function Coin({ isLight }: { isLight: boolean }) {
   const { coinId } = useParams();
   const { state } = useLocation() as RouteState;
+  const navigate = useNavigate();
   const priceMatch = useMatch("/:coinId/price");
   const chartMatch = useMatch("/:coinId/chart");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -151,15 +163,34 @@ function Coin() {
     }
   );
   const loading = infoLoading || tickersLoading;
+  const onBackClick = () => navigate("/");
   return (
     <Container>
       <Helmet>
-        <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+        <title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </title>
       </Helmet>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
+        <GoBackBtn onClick={onBackClick}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"
+            />
+          </svg>
+        </GoBackBtn>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -199,8 +230,11 @@ function Coin() {
             </Tab>
           </Tabs>
           <Routes>
-            <Route path="price" element={<Price />} />
-            <Route path="chart" element={<Chart coinId={`${coinId}`} />} />
+            <Route path="price" element={<Price coinId={`${coinId}`} />} />
+            <Route
+              path="chart"
+              element={<Chart coinId={`${coinId}`} isLight={isLight} />}
+            />
           </Routes>
         </>
       )}
