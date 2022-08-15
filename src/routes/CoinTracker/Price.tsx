@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCoinUSD } from "../api";
+import { fetchCoinUSD } from "../../api";
 import styled from "styled-components";
 
 const HeadLine = styled.div`

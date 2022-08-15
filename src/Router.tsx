@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Coin from "./routes/Coin";
-import Coins from "./routes/Coins";
+import Coin from "./routes/CoinTracker/Coin";
+import Coins from "./routes/CoinTracker/Coins";
+import ToDoList from "./routes/ToDoList/ToDoList";
 
 function Router({ isLight }: { isLight: boolean }) {
   return (
@@ -8,6 +9,7 @@ function Router({ isLight }: { isLight: boolean }) {
       <Routes>
         <Route path="/" element={<Coins />} />
         <Route path=":coinId/*" element={<Coin isLight={isLight} />} />
+        <Route path="/todos" element={<ToDoList />} />
       </Routes>
     </BrowserRouter>
   );

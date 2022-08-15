@@ -11,7 +11,7 @@ import {
   useParams,
 } from "react-router-dom";
 import styled from "styled-components";
-import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { fetchCoinInfo, fetchCoinTickers } from "../../api";
 import Chart from "./Chart";
 import Price from "./Price";
 
