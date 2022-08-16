@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { Categories, categoryState, IToDo, toDoSelector } from "../atoms";
+import { StateCategories, categoryState, toDoSelector } from "../atoms";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 
@@ -10,7 +10,8 @@ const TodoOverview = styled.div`
   justify-content: center;
   align-items: center;
   margin: 60px auto;
-  width: 320px;
+  width: fit-content;
+  max-width: 640px;
 `;
 
 const Title = styled.h1`
@@ -22,6 +23,16 @@ const TodoItemWrapper = styled.ul`
   width: inherit;
 `;
 
+const SelectBox = styled.select`
+  width: 5rem;
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  cursor: pointer;
+  font-family: "Gugi", cursive;
+  height: 2rem;
+`;
+
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
   const [category, setCategory] = useRecoilState(categoryState);
@@ -29,17 +40,17 @@ function ToDoList() {
     const {
       currentTarget: { value },
     } = event;
-    setCategory(value as Categories);
+    setCategory(value as StateCategories);
   };
   return (
     <TodoOverview>
       <Title>To Dos</Title>
       <hr style={{ width: "100%" }} />
-      <select onInput={onInput} value={category}>
-        <option value={Categories.TO_DO}>To Do</option>
-        <option value={Categories.DOING}>Doing</option>
-        <option value={Categories.DONE}>Done</option>
-      </select>
+      <SelectBox onInput={onInput} value={category}>
+        <option value={StateCategories.TO_DO}>To Do</option>
+        <option value={StateCategories.DOING}>Doing</option>
+        <option value={StateCategories.DONE}>Done</option>
+      </SelectBox>
       <CreateToDo />
       <TodoItemWrapper>
         {toDos?.map((toDo) => (

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { Categories, IToDo, toDoState } from "../atoms";
+import { StateCategories, IToDo, toDoState } from "../atoms";
 import { ValidBtn } from "./CreateToDo";
 
 const TodoItem = styled.li`
@@ -11,17 +11,24 @@ const TodoItem = styled.li`
   margin: 10px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  span {
+  width: 500px;
+  span.text {
     transition: color 0.2s ease-in;
-    width: 100%;
+    width: 8rem;
+    text-align: center;
+    flex: 1;
+  }
+  span.custom {
+    transition: color 0.2s ease-in;
+    width: 5rem;
     text-align: center;
   }
 `;
 
 const ToggleToDoBtn = styled(ValidBtn)<{ name: IToDo["category"] }>`
-  width: 100px;
+  width: 60px;
   padding: 0;
   margin: 0 3px;
   background-color: inherit;
@@ -31,7 +38,7 @@ const ToggleToDoBtn = styled(ValidBtn)<{ name: IToDo["category"] }>`
   }
 `;
 
-function ToDo({ text, category, id }: IToDo) {
+function ToDo({ text, category, id, customCategory }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
@@ -39,7 +46,12 @@ function ToDo({ text, category, id }: IToDo) {
     } = event;
     setToDos((oldToDos) => {
       const targetIndex = oldToDos.findIndex((toDo) => toDo.id === id);
-      const newToDo = { text, id, category: name as Categories };
+      const newToDo = {
+        text,
+        id,
+        category: name as StateCategories,
+        customCategory,
+      };
       return [
         ...oldToDos.slice(0, targetIndex),
         newToDo,
@@ -49,19 +61,20 @@ function ToDo({ text, category, id }: IToDo) {
   };
   return (
     <TodoItem>
+      <span className="custom">{customCategory}</span>
       <span className="text">{text}</span>
-      {category !== Categories.TO_DO && (
-        <ToggleToDoBtn onClick={onClick} name={Categories.TO_DO}>
+      {category !== StateCategories.TO_DO && (
+        <ToggleToDoBtn onClick={onClick} name={StateCategories.TO_DO}>
           To Do
         </ToggleToDoBtn>
       )}
-      {category !== Categories.DOING && (
-        <ToggleToDoBtn onClick={onClick} name={Categories.DOING}>
+      {category !== StateCategories.DOING && (
+        <ToggleToDoBtn onClick={onClick} name={StateCategories.DOING}>
           Doing
         </ToggleToDoBtn>
       )}
-      {category !== Categories.DONE && (
-        <ToggleToDoBtn onClick={onClick} name={Categories.DONE}>
+      {category !== StateCategories.DONE && (
+        <ToggleToDoBtn onClick={onClick} name={StateCategories.DONE}>
           Done
         </ToggleToDoBtn>
       )}

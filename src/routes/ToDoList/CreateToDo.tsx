@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { categoryState, IToDo, toDoState } from "../atoms";
+import { categoryState, toDoState } from "../atoms";
 
 const FormBox = styled.form`
   display: flex;
@@ -33,6 +33,9 @@ const InputBox = styled.div`
     }
     &:focus ~ span.bar:before {
       width: 100%;
+    }
+    &:focus::placeholder {
+      color: transparent;
     }
   }
   label {
@@ -93,37 +96,62 @@ export const ValidBtn = styled.button`
   }
 `;
 
-interface ITodoForm {
-  todo: string;
-}
+const CustomInput = styled(InputBox)`
+  width: 10rem;
+  margin-right: 5px;
+  text-align: center;
+  input {
+    &::placeholder {
+      text-align: center;
+    }
+  }
+`;
 
 interface ITodoForm {
   todo: string;
+  customCategory: string;
 }
 
 function CreateToDo() {
   const setToDos = useSetRecoilState(toDoState);
   const category = useRecoilValue(categoryState);
-  const { register, handleSubmit, setValue } = useForm<ITodoForm>();
-  const onValid = ({ todo }: ITodoForm) => {
+  const { register, handleSubmit, reset } = useForm<ITodoForm>();
+  const onValid = ({ todo, customCategory }: ITodoForm) => {
     setToDos((oldTodos) => [
-      { text: todo, category, id: Date.now() },
+      {
+        text: todo,
+        category,
+        id: Date.now(),
+        customCategory: customCategory as any,
+      },
       ...oldTodos,
     ]);
-    setValue("todo", "");
+    reset();
   };
   return (
     <FormBox onSubmit={handleSubmit(onValid)}>
-      <InputBox>
-        <input
-          {...register("todo", {
-            required: "Plz, your todo",
-          })}
-          type="text"
-          placeholder="Write a to do"
-        />
-        <span className="bar"></span>
-      </InputBox>
+      <div style={{ display: "flex" }}>
+        <CustomInput>
+          <input
+            {...register("customCategory", {
+              required: "Plz, your Category",
+            })}
+            type="text"
+            placeholder="Categories"
+          />
+          <span className="bar"></span>
+        </CustomInput>
+        <InputBox>
+          <input
+            {...register("todo", {
+              required: "Plz, your todo",
+            })}
+            type="text"
+            placeholder="Write a to do"
+          />
+          <span className="bar"></span>
+        </InputBox>
+      </div>
       <ValidBtn type="submit">Add</ValidBtn>
     </FormBox>
   );
