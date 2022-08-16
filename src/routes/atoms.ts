@@ -4,7 +4,6 @@ export enum StateCategories {
   "TO_DO" = "TO_DO",
   "DOING" = "DOING",
   "DONE" = "DONE",
-  "CUSTOM" = "CUSTOM",
 }
 export interface ICustomCategories {
   customCategories: string;
@@ -24,7 +23,7 @@ export const categoryState = atom<StateCategories>({
 
 export const toDoState = atom<IToDo[]>({
   key: "toDos",
-  default: [],
+  default: JSON.parse(localStorage.getItem(StateCategories.TO_DO) || "[]"),
 });
 
 export const toDoSelector = selector({

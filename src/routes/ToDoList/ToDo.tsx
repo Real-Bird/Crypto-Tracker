@@ -52,6 +52,14 @@ function ToDo({ text, category, id, customCategory }: IToDo) {
         category: name as StateCategories,
         customCategory,
       };
+      localStorage.setItem(
+        category,
+        JSON.stringify([
+          ...oldToDos.slice(0, targetIndex),
+          newToDo,
+          ...oldToDos.slice(targetIndex + 1),
+        ])
+      );
       return [
         ...oldToDos.slice(0, targetIndex),
         newToDo,

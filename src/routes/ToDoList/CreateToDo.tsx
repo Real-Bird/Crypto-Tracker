@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -115,17 +116,18 @@ interface ITodoForm {
 function CreateToDo() {
   const setToDos = useSetRecoilState(toDoState);
   const category = useRecoilValue(categoryState);
+  const storageToDos = JSON.parse(localStorage.getItem(category) || "[]");
   const { register, handleSubmit, reset } = useForm<ITodoForm>();
   const onValid = ({ todo, customCategory }: ITodoForm) => {
-    setToDos((oldTodos) => [
-      {
-        text: todo,
-        category,
-        id: Date.now(),
-        customCategory: customCategory as any,
-      },
-      ...oldTodos,
-    ]);
+    const newToDo = {
+      text: todo,
+      category,
+      id: Date.now(),
+      customCategory: customCategory as any,
+    };
+    setToDos((oldTodos) => [newToDo, ...oldTodos]);
+    storageToDos.push(newToDo);
+    localStorage.setItem(category, JSON.stringify(storageToDos));
     reset();
   };
   return (
