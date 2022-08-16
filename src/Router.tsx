@@ -5,8 +5,8 @@ import ToDoList from "./routes/ToDoList/ToDoList";
 
 function Router({ isLight }: { isLight: boolean }) {
   return (
-    // <BrowserRouter basename={process.env.PUBLIC_URL}>
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      {/* <BrowserRouter> */}
       <Routes>
         <Route path="/" element={<Coins />} />
         <Route path=":coinId/*" element={<Coin isLight={isLight} />} />
